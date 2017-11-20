@@ -1,0 +1,6 @@
+*.vs
+*Intermediate/
+*.sln
+*Binaries/
+*Saved/
+*Config/
