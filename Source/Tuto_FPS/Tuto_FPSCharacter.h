@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Gun.h"
 #include "Tuto_FPSCharacter.generated.h"
+
 
 class UInputComponent;
 
@@ -48,8 +50,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint32 bUsingMotionControllers : 1;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	TSubclassOf<class AGun> GunBluePrint;
+
 protected:
 	
+	AGun* Gun;
 	
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();

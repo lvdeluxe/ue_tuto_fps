@@ -57,7 +57,8 @@ void ATuto_FPSCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
-	//FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	Gun = GetWorld()->SpawnActor<AGun>(GunBluePrint);
+	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 
 	// Show or hide the two versions of the gun based on whether or not we're using motion controllers.
 	if (bUsingMotionControllers)
@@ -68,6 +69,10 @@ void ATuto_FPSCharacter::BeginPlay()
 	{
 		Mesh1P->SetHiddenInGame(false, true);
 	}
+
+	Gun->AnimInstance = Mesh1P->GetAnimInstance();
+	InputComponent->BindAction("Fire", IE_Pressed, Gun, &AGun::OnFire);
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,7 +88,7 @@ void ATuto_FPSCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ATuto_FPSCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, Gun, &AGun::OnFire);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
